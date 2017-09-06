@@ -17,5 +17,12 @@ def genererReads(seq, n):
     random.shuffle(reads)
     return reads
 
+def genererSeq(tSeq):
+    """"Permet de générer une séquence de taille tSeq """
+    seq=[]
+    i = 0
+    for i in range(tSeq):
+
+
 print(seq)
 print(genererReads(seq, 6))
