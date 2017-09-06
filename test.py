@@ -3,8 +3,8 @@ import random
 seq = "AGCTCGAGTCAGCGCTCTAGATCG"
 
 def genererReads(seq, n):
-    """Permet de générer des reads en fonction d'une séquence
-       entrée en paramètre et de la taille des reads"""
+    """Permet de générer des reads de taille n en fonction d'une
+       séquence ADN entrée en paramètre """
     reads = []
     i = 0
     while i <= len(seq):
