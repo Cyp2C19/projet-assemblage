@@ -1,5 +1,10 @@
 import random
 
+def createRandomDNASeq(n):
+    seq = ''
+    for i in range(0, n):
+        seq += random.choice(['A','C','G','T'])
+    return seq
 
 def createReads(seq,readSize,delta,overlap,repeat):
     print("Parameters")
