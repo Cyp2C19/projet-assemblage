@@ -15,3 +15,4 @@ def createReads(seq,readSize,delta,overlap,repeat):
 
         lenR=randint(readSize-delta,readSize+delta)
         print(lenR)
+        print("toto")
