@@ -11,41 +11,52 @@ def select_file():
     global DNA_seq
     DNA_seq = fichier.read()
     fichier.close()
-    Label(label1,text="Your selected DNA sequence : ").pack()
-    scr = Scrollbar(label1,orient=VERTICAL)
-    txt = Text(label1,height=4, width=50)
-    scr.pack(side=RIGHT,fill=Y)
-    txt.pack(side=TOP,fill=BOTH,expand=TRUE)
-    scr.config(command=txt.yview)
-    txt.config(yscrollcommand=scr.set)
+    displayDNASeq()
+    displayReads()
+
+def generateDNASeq():
+    global DNA_seq
+    DNA_seq = createRandomDNASeq(int(length.get()))
+    displayDNASeq()
+    displayReads()
+
+def displayReads():
+    reads = createReads(DNA_seq,int(tReads.get()),int(deltaReads.get()),int(tOverlap.get()),int(depth.get()))
+    global text
+    val = ""
+    for i in range(0, len(reads)):
+        val += reads[i] + " "
+    text.delete('1.0', END)
+    text.insert(END, val)
+    text.pack()
+
+def displayDNASeq():
+    global txt
+    txt.delete('1.0', END)
     txt.insert(END, DNA_seq)
+    txt.pack()
 
-    reads = createReads(DNA_seq,int(tReads.get()),int(deltaReads.get()),int(tOverlap.get()),int(depth.get()))
-    global text
-    val = ""
-    for i in range(0, len(reads)):
-        val += reads[i] + " "
-    text.delete('1.0',END)
-    text.insert(END, val)
-    text.pack()
-
-
-def buttomAction():
-    reads = createReads(DNA_seq,int(tReads.get()),int(deltaReads.get()),int(tOverlap.get()),int(depth.get()))
-    global text
-    val = ""
-    for i in range(0, len(reads)):
-        val += reads[i] + " "
-    text.delete('0.0', END)
-    text.insert(END, val)
-    text.pack()
-
-label1=LabelFrame(fenetre, text="Input DNA sequence", padx=20,pady=20)
+label1=LabelFrame(fenetre, text="Input DNA sequence", padx=20,pady=14)
 label1.pack(fill="both",expand="yes")
-Label(label1, text="Select your DNA sequence in txt format : ").pack()
-bouton = Button(label1, text="Choose file", command=select_file).pack()
+Label(label1, text="Select your DNA sequence in txt format", font = "Helvetica 8 bold").pack()
+Button(label1, text="Choose file", command=select_file).pack()
 
-label2=LabelFrame(fenetre, text="Reads building", padx=250, pady=50)
+Label(label1, text="OR").pack()
+Label(label1, text="Generate a random DNA sequence", font = "Helvetica 8 bold").pack()
+Label(label1,text="Select the length").pack()
+length = Spinbox(label1,from_=1,to=10)
+length.pack()
+Button(label1, text="Generate", command=generateDNASeq).pack()
+
+Label(label1, text="Your selected DNA sequence : ").pack()
+scr = Scrollbar(label1, orient=VERTICAL)
+txt = Text(label1, height=4, width=50)
+scr.pack(side=RIGHT, fill=Y)
+txt.pack(side=TOP, fill=BOTH, expand=TRUE)
+scr.config(command=txt.yview)
+txt.config(yscrollcommand=scr.set)
+
+label2=LabelFrame(fenetre, text="Reads building", padx=250, pady=20)
 label2.pack(fill="both",expand="yes")
 Label(label2,text="Select the length reads that you want : ").pack()
 tReads = Spinbox(label2,from_=8,to=15)
@@ -60,7 +71,7 @@ Label(label2,text="Select the depth").pack()
 depth = Spinbox(label2,from_=1,to=10)
 depth.pack()
 
-Button(label2, text="Change value", command=buttomAction).pack()
+Button(label2, text="Build", command=displayReads).pack()
 
 label3=LabelFrame(fenetre, text="Output results", padx=20,pady=20)
 label3.pack(fill="both",expand="yes")
