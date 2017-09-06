@@ -1,4 +1,5 @@
-from random import randint
+import random
+
 
 def createReads(seq,readSize,delta,overlap,repeat):
     print("Parameters")
@@ -9,10 +10,13 @@ def createReads(seq,readSize,delta,overlap,repeat):
     print(repeat)
 
     reads = []
-    i = 0
-    while i < 10:
-
-
-        lenR=randint(readSize-delta,readSize+delta)
-        print(lenR)
-        print("toto")
+    for j in range(0,repeat):
+        i = 0
+        while i < len(seq):
+            if i != 0:
+                i -= random.randint(1,overlap)
+            lenR=random.randint(readSize-delta,readSize+delta)
+            reads.append(seq[i:i+lenR])
+            i += lenR
+    random.shuffle(reads)
+    return(reads)

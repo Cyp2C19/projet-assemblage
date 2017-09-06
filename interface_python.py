@@ -13,11 +13,23 @@ def select_file():
     fichier.close()
     Label(label1,text="Your selected DNA sequence : ").pack()
     Label(label1, text=DNA_seq).pack()
-    createReads(DNA_seq,tReads.get(),deltaReads.get(),tOverlap.get(),depth.get())
+    reads = createReads(DNA_seq,int(tReads.get()),int(deltaReads.get()),int(tOverlap.get()),int(depth.get()))
+    text = Text(label3)
+    for i in range(0, len(reads)):
+        if i % 5 == 0:
+            text.insert(INSERT, "\n")
+        text.insert(INSERT, reads[i] + " ")
+    text.pack()
 
 
 def buttomAction():
-    createReads(DNA_seq,tReads.get(),deltaReads.get(),tOverlap.get(),depth.get())
+    reads = createReads(DNA_seq,int(tReads.get()),int(deltaReads.get()),int(tOverlap.get()),int(depth.get()))
+    text = Text(label3)
+    for i in range(0,len(reads)):
+        if i%5 == 0:
+            text.insert(INSERT,"\n")
+        text.insert(INSERT,reads[i]+" ")
+    text.pack()
 
 label1=LabelFrame(fenetre, text="Input DNA sequence", padx=20,pady=20)
 label1.pack(fill="both",expand="yes")
@@ -27,13 +39,13 @@ bouton = Button(label1, text="Choose file", command=select_file).pack()
 label2=LabelFrame(fenetre, text="Reads building", padx=250, pady=50)
 label2.pack(fill="both",expand="yes")
 Label(label2,text="Select the length reads that you want : ").pack()
-tReads = Spinbox(label2,from_=5,to=10)
+tReads = Spinbox(label2,from_=8,to=15)
 tReads.pack()
 Label(label2,text="Select the delta variation : ").pack()
-deltaReads = Spinbox(label2,from_=1,to=4)
+deltaReads = Spinbox(label2,from_=1,to=3)
 deltaReads.pack()
 Label(label2,text="Select the maximum overlap : ").pack()
-tOverlap = Spinbox(label2,from_=0,to=4)
+tOverlap = Spinbox(label2,from_=1,to=4)
 tOverlap.pack()
 Label(label2,text="Select the depth").pack()
 depth = Spinbox(label2,from_=1,to=10)
