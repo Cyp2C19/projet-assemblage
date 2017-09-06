@@ -12,23 +12,32 @@ def select_file():
     DNA_seq = fichier.read()
     fichier.close()
     Label(label1,text="Your selected DNA sequence : ").pack()
-    Label(label1, text=DNA_seq).pack()
+    scr = Scrollbar(label1,orient=VERTICAL)
+    txt = Text(label1,height=4, width=50)
+    scr.pack(side=RIGHT,fill=Y)
+    txt.pack(side=TOP,fill=BOTH,expand=TRUE)
+    scr.config(command=txt.yview)
+    txt.config(yscrollcommand=scr.set)
+    txt.insert(END, DNA_seq)
+
     reads = createReads(DNA_seq,int(tReads.get()),int(deltaReads.get()),int(tOverlap.get()),int(depth.get()))
-    text = Text(label3)
+    global text
+    val = ""
     for i in range(0, len(reads)):
-        if i % 5 == 0:
-            text.insert(INSERT, "\n")
-        text.insert(INSERT, reads[i] + " ")
+        val += reads[i] + " "
+    text.delete('1.0',END)
+    text.insert(END, val)
     text.pack()
 
 
 def buttomAction():
     reads = createReads(DNA_seq,int(tReads.get()),int(deltaReads.get()),int(tOverlap.get()),int(depth.get()))
-    text = Text(label3)
-    for i in range(0,len(reads)):
-        if i%5 == 0:
-            text.insert(INSERT,"\n")
-        text.insert(INSERT,reads[i]+" ")
+    global text
+    val = ""
+    for i in range(0, len(reads)):
+        val += reads[i] + " "
+    text.delete('0.0', END)
+    text.insert(END, val)
     text.pack()
 
 label1=LabelFrame(fenetre, text="Input DNA sequence", padx=20,pady=20)
@@ -56,5 +65,13 @@ Button(label2, text="Change value", command=buttomAction).pack()
 label3=LabelFrame(fenetre, text="Output results", padx=20,pady=20)
 label3.pack(fill="both",expand="yes")
 Label(label3,text="Reads :").pack()
+
+scroll = Scrollbar(label3,orient=VERTICAL)
+text = Text(label3)
+scroll.pack(side=RIGHT,fill=Y)
+text.pack(side=TOP,fill=BOTH,expand=TRUE)
+scroll.config(command=text.yview)
+text.config(yscrollcommand=scroll.set)
+text.insert(END,"Select DNA seq to calculate the reads.")
 
 fenetre.mainloop()
