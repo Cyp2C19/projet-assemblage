@@ -1,7 +1,6 @@
-from tkinter import *
 from tkinter.filedialog import *
 from DNA_manage import *
-from tkinter.messagebox import *
+
 import os
 
 fenetre = Tk()
@@ -46,32 +45,51 @@ def displayDNASeq():
     txt.insert(END, DNA_seq)
     txt.pack()
 
+def select_output_path():
+    filepath = asksaveasfilename(title="Select DNA sequence", filetypes=[('csv files', '.csv')])
+    if filepath[-4:] != '.csv':
+        filepath += '.csv'
+    return(filepath)
+
 def dlResults():
-    outputfile = open('Reads_results.csv','w')
+    path=select_output_path()
+    outputfile = open(path,'w')
     for i in range(0,len(reads)):
         if i%10==0 and i!=0:
             outputfile.write("\n")
         outputfile.write(reads[i])
         outputfile.write("\t")
     outputfile.close()
-    msg = "Results are download at :\n"
-    msg += str(os.getcwd())
-    showinfo('titre',msg)
 
 
 label1=LabelFrame(fenetre, text="Input DNA sequence", padx=20,pady=14)
 label1.pack(fill="both",expand="yes")
-Label(label1, text="Select your DNA sequence in txt format", font = "Helvetica 8 bold").pack()
-Button(label1, text="Choose file", command=select_file).pack()
 
-Label(label1, text="OR").pack()
-Label(label1, text="Generate a random DNA sequence", font = "Helvetica 8 bold").pack()
-Label(label1,text="Select the length").pack()
+p0 = PanedWindow(label1, orient=HORIZONTAL)
+p0.pack(side=TOP, expand=Y, fill=BOTH, pady=2, padx=250)
+ssp01 = PanedWindow(p0, orient=VERTICAL)
+ssp01.pack(side=LEFT, expand=Y, fill=BOTH, pady=2, padx=10)
+
+ssp01.add(Label(label1, text="Select your DNA sequence in txt format", font = "Helvetica 8 bold",pady=30, padx=10))
+ssp01.add(Button(label1, text="Choose file", command=select_file))
+
+ssp02 = PanedWindow(p0, orient=VERTICAL)
+ssp02.pack(side=LEFT, expand=Y, fill=BOTH, pady=2, padx=2)
+ssp02.add(Label(label1, text="OR", pady=2, padx=140))
+
+ssp03 = PanedWindow(p0, orient=VERTICAL)
+ssp03.pack(side=LEFT, expand=Y, fill=BOTH, pady=2, padx=10)
+
+ssp03.add(Label(label1, text="Generate a random DNA sequence", font = "Helvetica 8 bold"))
+ssp03.add(Label(label1,text="Select the length", pady=7, padx=2))
 length = Spinbox(label1,from_=200,to=50000, increment = 50)
-length.pack()
-Button(label1, text="Generate", command=generateDNASeq).pack()
+ssp03.add(length)
+ssp03.add(Button(label1, text="Generate", command=generateDNASeq))
+p0.add(ssp01)
+p0.add(ssp02)
+p0.add(ssp03)
 
-Label(label1, text="Your selected DNA sequence : ").pack()
+Label(label1, text="Your selected DNA sequence : ", pady=10, padx=2).pack()
 scr = Scrollbar(label1, orient=VERTICAL)
 txt = Text(label1, height=4, width=50)
 scr.pack(side=RIGHT, fill=Y)
@@ -131,7 +149,6 @@ text.pack(side=TOP,fill=BOTH,expand=TRUE)
 scroll.config(command=text.yview)
 text.config(yscrollcommand=scroll.set)
 text.insert(END,"Select DNA seq to calculate the reads.")
-
 
 
 fenetre.mainloop()

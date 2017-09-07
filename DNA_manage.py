@@ -7,13 +7,6 @@ def createRandomDNASeq(n):
     return seq
 
 def createReads(seq,readSize,delta,overlap,repeat):
-    print("Parameters")
-    print(seq)
-    print(readSize)
-    print(delta)
-    print(overlap)
-    print(repeat)
-
     reads = []
     for j in range(0,repeat):
         i = 0
