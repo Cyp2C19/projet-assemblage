@@ -26,7 +26,7 @@ def generateDNASeq():
 
 def calculateReads():
     global reads
-    reads = createReads(DNA_seq, int(tReads.get()), int(deltaReads.get()), int(tOverlap.get()), int(depth.get()))
+    reads = createReads(DNA_seq, int(tReads.get()), int(deltaReads.get()), int(tOverlap.get()), int(depth.get()), int(checkboxVal.get()))
     displayReads(reads)
 
 def displayReads(reads):
@@ -98,7 +98,7 @@ scr.config(command=txt.yview)
 txt.config(yscrollcommand=scr.set)
 
 
-label2=LabelFrame(fenetre, text="Reads building", padx=350, pady=10)
+label2=LabelFrame(fenetre, text="Reads building", padx=300, pady=10)
 label2.pack(fill="both",expand="yes")
 
 p = PanedWindow(label2, orient=HORIZONTAL)
@@ -128,10 +128,19 @@ ssp4.add(Label(label2,text="Select the depth : "))
 depth = Spinbox(label2,from_=1,to=10)
 ssp4.add(depth)
 
+ssp5 = PanedWindow(p, orient=VERTICAL)
+ssp5.pack(side=LEFT, expand=Y, fill=BOTH, pady=2, padx=10)
+ssp5.add(Label(label2,text="Randomize the reads : "))
+checkboxVal = IntVar()
+checkbox = Checkbutton(fenetre, text="Randomize?",variable=checkboxVal)
+print(checkboxVal.get())
+ssp5.add(checkbox)
+
 p.add(ssp1)
 p.add(ssp2)
 p.add(ssp3)
 p.add(ssp4)
+p.add(ssp5)
 
 Button(label2, text="Build", command=calculateReads).pack()
 

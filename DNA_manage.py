@@ -6,7 +6,7 @@ def createRandomDNASeq(n):
         seq += random.choice(['A','C','G','T'])
     return seq
 
-def createReads(seq,readSize,delta,overlap,repeat):
+def createReads(seq,readSize,delta,overlap,repeat,isRandom):
     reads = []
     for j in range(0,repeat):
         i = 0
@@ -16,5 +16,6 @@ def createReads(seq,readSize,delta,overlap,repeat):
             lenR=random.randint(readSize-delta,readSize+delta)
             reads.append(seq[i:i+lenR])
             i += lenR
-    random.shuffle(reads)
+    if isRandom == 1:
+        random.shuffle(reads)
     return(reads)
