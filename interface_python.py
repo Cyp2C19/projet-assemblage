@@ -1,8 +1,6 @@
 from tkinter.filedialog import *
 from DNA_manage import *
 
-import os
-
 fenetre = Tk()
 fenetre.wm_state(newstate="zoomed")
 
@@ -61,7 +59,9 @@ def dlResults():
         outputfile.write("\t")
     outputfile.close()
 
+####################### INTERFACE ##############################
 
+################### PART 1 #######################
 label1=LabelFrame(fenetre, text="Input DNA sequence", padx=20,pady=14)
 label1.pack(fill="both",expand="yes")
 
@@ -97,7 +97,7 @@ txt.pack(side=TOP, fill=BOTH, expand=TRUE)
 scr.config(command=txt.yview)
 txt.config(yscrollcommand=scr.set)
 
-
+################### PART 2 #######################
 label2=LabelFrame(fenetre, text="Reads building", padx=300, pady=10)
 label2.pack(fill="both",expand="yes")
 
@@ -144,6 +144,7 @@ p.add(ssp5)
 
 Button(label2, text="Build", command=calculateReads).pack()
 
+################### PART 3 #######################
 label3=LabelFrame(fenetre, text="Output results", padx=20,pady=20)
 label3.pack(fill="both",expand="yes")
 Label(label3,text="Reads :").pack()
