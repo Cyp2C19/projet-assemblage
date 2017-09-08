@@ -193,5 +193,3 @@ def main_methode2():
         print("Le motif est présent dans la chaine caractère aux positions : ");
         for i in range(posMotif[0], posMotif[1] + 1):
             print("\t> " + str(tSAx[i - 1]));
-
-main_methode2()
