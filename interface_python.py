@@ -1,5 +1,6 @@
 from tkinter.filedialog import *
 from DNA_manage import *
+from Interface_result import *
 
 fenetre = Tk()
 fenetre.wm_state(newstate="zoomed")
@@ -58,6 +59,10 @@ def dlResults():
         outputfile.write(reads[i])
         outputfile.write("\t")
     outputfile.close()
+
+def goResult():
+    global reads
+    displayResults(reads)
 
 ####################### INTERFACE ##############################
 
@@ -148,9 +153,15 @@ Button(label2, text="Build", command=calculateReads).pack()
 label3=LabelFrame(fenetre, text="Output results", padx=20,pady=20)
 label3.pack(fill="both",expand="yes")
 Label(label3,text="Reads :").pack()
-dlButton = Button(label3, text="Download result", command=dlResults)
+p3 = PanedWindow(label3, orient=HORIZONTAL)
+p3.pack(side=BOTTOM, expand=Y, fill=BOTH, pady=2, padx=550)
+dlButton = Button(label3, text="Download results", command=dlResults)
 dlButton.pack(side = BOTTOM)
 dlButton.config(state=DISABLED)
+p3.add(dlButton)
+p3.add(Button(p3, text="Display results", command=goResult))
+#goResult.pack(side = BOTTOM)
+
 
 scroll = Scrollbar(label3,orient=VERTICAL)
 text = Text(label3)
