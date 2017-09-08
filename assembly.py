@@ -27,7 +27,6 @@ def creerBx(tSAx, X):
             Bx.append('$');
         else:
             Bx.append(X[i - 2]);  # -2 car X commence sa numérotation à 0
-
     return Bx;
 
 
