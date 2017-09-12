@@ -264,18 +264,15 @@ def findOverlap(read,cx,occx,sax):
     lettre = ["$", "A", "C", "G", "T"]
     i = len(read)
     l = cx[read[i-1]]
-    print("l=",l)
     lettreSuiv = read[i-1]
     if lettreSuiv != "T":
         lettreSuiv = lettre.index(lettreSuiv)+1
         u = cx[lettre[lettreSuiv]] - 1
     else:
         u = len(sax)
-    print("u=",u)
     i -= 1
     while l <= u and i >= 1 :
-        print("while ok")
-        if ((len(read) - i-1 + 1) >= 1):
+        if ((len(read) - i-1 + 1) >= 0):
             l2,u2 = updateBackward2(l,u,cx,occx,"$")
             if l2 <= u2:
                 print("X=",read,", l2=",l2,", u2=",u2)
@@ -287,10 +284,67 @@ def findOverlap(read,cx,occx,sax):
     return(-1,-1)
 
 
+def genOverlap(l, u, sax, suff, read):
+    if l != u:
+        print("if 0 ok")
+        ssl = []
+        for k in range(l, u + 1):
+            ssl.append(sax[k-1])
+        print("ssl:")
+        print(ssl)
+        for m in ssl:
+            if m[0] == 0:
+                print("if 1 ok")
+                if m[1] + len(suff) == len(read) :
+                    print("if 2 ok")
+                    if (1,0) in ssl:
+                        print("if 3 ok")
+                        return True
+        return False
+    else:
+        return False
+
+def parcoursReads(listeReads,overlapSize):
+    seq = ""
+    for i in range(0,len(listeReads)-1):
+        print("Reads:",listeReads[i],", ",listeReads[i+1])
+        ssListe=[listeReads[i],listeReads[i+1]]
+        sax = generalSAx(ssListe)
+        bx = generalBx(sax, ssListe)
+        cx = generalCx(bx)
+        occx = generalOccx(bx)
+
+        for j in reversed(range(1, overlapSize + 1)):
+            suff=ssListe[0][:-1][-j:]
+            l, u = findOverlap(suff, cx, occx, sax)
+            print("Sax = ")
+            print(sax)
+            print("l=",l,", u=",u)
+            res = genOverlap(l,u,sax,suff,listeReads[i])
+            print(res)
+            if res:
+                seq += listeReads[i][:-len(suff)]
+                break
+            print("****************************")
+        print("----------------------------------")
+    seq += listeReads[-1]
+    print(seq)
+    return(seq)
+
+
 #main_methode2()
-listeReads=["ATGCT","CTTGATG","GATCCAT","ATC"]
-sax=generalSAx(listeReads)
-bx=generalBx(sax,listeReads)
-cx=generalCx(bx)
-occx=generalOccx(bx)
-findOverlap("CT",cx,occx,sax)
+# seq = TCTGAGAACAACGTACGGACCGGTATGTACACAGGAGATATTCATTGATAGCACGCTTAGCCCCCCCAAAAACTTTAAGCTCAACCATTAACTGTGTACGAGACGTCTGAATAAGGGTGATCCTGCGCACTTGGCTCAACAGTTCCTGATCGTTTTGCACAGCCTAGAGACCTTACCGCATAGGGATGGACTTTCCGCTG
+#listeReads=["ATGCT","CTTGATG","GATCCAT","ATC","TCTATATA"]
+listeReads=["TCTGAGA","GAACAACGT","GTACGGA","ACCGGTAT","TATGTACAC","CAGGAGA","AGATATTCA","ATTGATA","TAGCACGCT","TTAGCCC","CCCCCCCA","CAAAAACT","CTTTAAG","AAGCTCA","CAACCAT","CATTAAC","CTGTGTAC","ACGAGAC","GACGTCT","CTGAATAA","AAGGGTG","GATCCTGCG","CGCACTTG","TTGGCTC","CAACAGTT","TTCCTGAT","TCGTTTT","TTGCACAG","CAGCCTAG","TAGAGACC","CCTTACCGC","CGCATAGGG","GGATGGACT","CTTTCCG","GCTG"]
+
+parcoursReads(listeReads,3)
+
+
+
+# #l1 = ["ATGCT","CTTGAT"]
+# sax=generalSAx(l1)
+# bx=generalBx(sax,l1)
+# cx=generalCx(bx)
+# occx=generalOccx(bx)
+# l,u=findOverlap("GCT",cx,occx,sax)
+# checkOverlap(l,u,sax)
