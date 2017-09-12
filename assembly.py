@@ -9,12 +9,14 @@ def creerSAx(X):
         t.append(X[i:len(X)]);
 
     t_tri.sort();
-
+    print(t_tri)
+    print(t)
     for i in range(0, len(t_tri)):
         for j in range(0, len(t)):
             if t[j] == t_tri[i]:
                 tSAx.append(j + 1);  # +1 car X commence sa numérotation à 0
-
+                break
+    print(tSAx)
     return tSAx;
 
 
@@ -27,6 +29,7 @@ def creerBx(tSAx, X):
             Bx.append('$');
         else:
             Bx.append(X[i - 2]);  # -2 car X commence sa numérotation à 0
+    print(Bx)
     return Bx;
 
 
@@ -193,3 +196,69 @@ def main_methode2():
         print("Le motif est présent dans la chaine caractère aux positions : ");
         for i in range(posMotif[0], posMotif[1] + 1):
             print("\t> " + str(tSAx[i - 1]));
+
+def generalSAx(reads):      # Reads = list of reads
+    if reads[0][-1] != '$':
+        for i in range(0,len(reads)):
+            reads[i]+='$'
+
+    GSAx = []
+    for i in range (0,len(reads)):
+        for j in range(0,len(reads[i])):
+            if GSAx == []:
+                GSAx.append((i,j))
+            else:
+                find=False
+                for k in range(0,len(GSAx)):
+                    if reads[GSAx[k][0]][GSAx[k][1]:] > reads[i][j:]:
+                        GSAx.insert(k,(i,j))
+                        find=True
+                        break
+                    elif reads[GSAx[k][0]][GSAx[k][1]:] == reads[i][j:]:
+                        if GSAx[k][0] > i:
+                            GSAx.insert(k, (i, j))
+                            find=True
+                            break
+                if not(find):
+                    GSAx.append((i, j))
+    print(GSAx)
+    return(GSAx)
+
+
+def generalBx(gSAx, reads):
+    Bx = [];
+    for i in (gSAx):
+        if i[1] == 0:
+            Bx.append('$');
+        else:
+            Bx.append(reads[i[0]][i[1]-1]);
+    print(Bx)
+    return Bx;
+
+def generalCx(Bx):
+    Cx={"$":1}
+    Cx["A"] = len([i for i in Bx if i == '$'])+1
+    Cx["C"] = len([i for i in Bx if i == 'A'])+Cx["A"]
+    Cx["G"] = len([i for i in Bx if i == 'C'])+Cx["C"]
+    Cx["T"] = len([i for i in Bx if i == 'G']) + Cx["G"]
+    print(Cx)
+    return(Cx)
+
+
+def generalOccx(Bx):
+    lettre = ["$","A","C","G","T"]
+    Occx = {"$":[],"A":[],"C":[],"G":[],"T":[]}
+    for i in Bx:
+        Occx[i].append(1) if Occx[i]==[] else Occx[i].append((Occx[i][-1])+1)
+        for l in [k for k in lettre if k != i]:
+            Occx[l].append(0) if Occx[l]==[] else Occx[l].append((Occx[l][-1]))
+    print(Occx)
+    return(Occx)
+
+
+#main_methode2()
+listeReads=["ACT","TCG","GC"]
+test=generalSAx(listeReads)
+test2=generalBx(test,listeReads)
+test3=generalCx(test2)
+generalOccx(test2)
