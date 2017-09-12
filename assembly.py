@@ -255,10 +255,42 @@ def generalOccx(Bx):
     print(Occx)
     return(Occx)
 
+def updateBackward2(l, u, cx, occx, lettre):
+    newL = cx[lettre] + occx[lettre][l-2]
+    newU = cx[lettre] + occx[lettre][u-1]-1
+    return(newL,newU)
+
+def findOverlap(read,cx,occx,sax):
+    lettre = ["$", "A", "C", "G", "T"]
+    i = len(read)
+    l = cx[read[i-1]]
+    print("l=",l)
+    lettreSuiv = read[i-1]
+    if lettreSuiv != "T":
+        lettreSuiv = lettre.index(lettreSuiv)+1
+        u = cx[lettre[lettreSuiv]] - 1
+    else:
+        u = len(sax)
+    print("u=",u)
+    i -= 1
+    while l <= u and i >= 1 :
+        print("while ok")
+        if ((len(read) - i-1 + 1) >= 1):
+            l2,u2 = updateBackward2(l,u,cx,occx,"$")
+            if l2 <= u2:
+                print("X=",read,", l2=",l2,", u2=",u2)
+        l,u = updateBackward2(l,u,cx,occx, read[i-1])
+        i -= 1
+    if l <= u:
+        print("X=",read,", l=",l,", u=",u)
+        return(l,u)
+    return(-1,-1)
+
 
 #main_methode2()
-listeReads=["ACT","TCG","GC"]
-test=generalSAx(listeReads)
-test2=generalBx(test,listeReads)
-test3=generalCx(test2)
-generalOccx(test2)
+listeReads=["ATGCT","CTTGATG","GATCCAT","ATC"]
+sax=generalSAx(listeReads)
+bx=generalBx(sax,listeReads)
+cx=generalCx(bx)
+occx=generalOccx(bx)
+findOverlap("CT",cx,occx,sax)
