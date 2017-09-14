@@ -1,9 +1,13 @@
 from tkinter.filedialog import *
 from DNA_manage import *
-from Interface_result import *
+#from Interface_result import *
+
+
+
 
 fenetre = Tk()
 fenetre.wm_state(newstate="zoomed")
+
 
 DNA_seq = ""
 reads = []
@@ -37,6 +41,7 @@ def displayReads(reads):
     text.insert(END, val)
     text.pack()
     dlButton.config(state=NORMAL)
+    #displayButton.config(state=NORMAL)
 
 def displayDNASeq():
     global txt
@@ -60,9 +65,8 @@ def dlResults():
         outputfile.write("\t")
     outputfile.close()
 
-def goResult():
-    global reads
-    displayResults(reads)
+
+
 
 ####################### INTERFACE ##############################
 
@@ -159,8 +163,10 @@ dlButton = Button(label3, text="Download results", command=dlResults)
 dlButton.pack(side = BOTTOM)
 dlButton.config(state=DISABLED)
 p3.add(dlButton)
-p3.add(Button(p3, text="Display results", command=goResult))
-#goResult.pack(side = BOTTOM)
+# displayButton = Button(p3, text="Display results", command=goResult)
+# displayButton.pack(side = BOTTOM)
+# displayButton.config(state=DISABLED)
+# p3.add(displayButton)
 
 
 scroll = Scrollbar(label3,orient=VERTICAL)
@@ -170,6 +176,11 @@ text.pack(side=TOP,fill=BOTH,expand=TRUE)
 scroll.config(command=text.yview)
 text.config(yscrollcommand=scroll.set)
 text.insert(END,"Select DNA seq to calculate the reads.")
+
+
+
+Button(fenetre, text="Build", command=calculateReads).pack()
+
 
 
 fenetre.mainloop()
